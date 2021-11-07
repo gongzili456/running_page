@@ -67,7 +67,7 @@ jobs:
         run: |
           python scripts/nike_to_strava_sync.py ${{ secrets.NIKE_REFRESH_TOKEN }} ${{ secrets.STRAVA_CLIENT_ID }} ${{ secrets.STRAVA_CLIENT_SECRET }} ${{ secrets.STRAVA_CLIENT_REFRESH_TOKEN }}
 
-      - name: Run sync Keep script
+      - name: Run sync iChebao script
         if: env.RUN_TYPE == 'ichebao'
         run: |
           python scripts/ichebao_sync.py ${{ secrets.ICHEBAO_MOBILE }} ${{ secrets.ICHEBAO_PASSWORD }} ${{ secrets.ICHEBAO_SIGN }} --with-gpx
