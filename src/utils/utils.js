@@ -26,17 +26,18 @@ const formatPace = (d) => {
   return `${minutes}:${seconds.toFixed(0).toString().padStart(2, '0')}`;
 };
 
-const formatRunTime = (distance,pace) => {
+const formatRunTime = (distance, pace) => {
   if (Number.isNaN(distance) || Number.isNaN(pace)) {
     return '0min';
   }
-  const formatPace = (1000.0 / 60.0) * (1.0 / pace);
-  const minutes = Math.floor(formatPace * distance);
-  if (minutes === 0) {
-    const seconds = Math.floor((formatPace * distance - minutes) * 60.0);
-    return seconds + 's';
+  const hours = Number((distance / pace).toFixed(2));
+  const minutes = Math.floor(hours * 60);
+
+  if (minutes <= 60) {
+    return minutes + 'min';
   }
-  return minutes + 'min';
+  console.log('-----> ', minutes, hours);
+  return parseInt(minutes / 60) + 'h, ' + parseInt((hours % 1) * 60) + 'm';
 };
 
 // for scroll to the map

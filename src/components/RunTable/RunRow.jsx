@@ -1,6 +1,6 @@
 import React from 'react';
 import { MAIN_COLOR } from 'src/utils/const';
-import { formatPace, titleForRun, formatRunTime  } from 'src/utils/utils';
+import { formatPace, formatRunTime } from 'src/utils/utils';
 import styles from './style.module.scss';
 
 const RunRow = ({ runs, run, locateActivity, runIndex, setRunIndex }) => {
@@ -34,12 +34,12 @@ const RunRow = ({ runs, run, locateActivity, runIndex, setRunIndex }) => {
         locateActivity(run);
       }}
     >
-      <td>{titleForRun(run)}</td>
-      <td>{distance}</td>
-      {pace && <td>{paceParts}</td>}
-      <td>{heartRate && heartRate.toFixed(0)}</td>
+      <td>{}</td>
+      <td>{distance}km</td>
+      {pace && <td>{pace}km/h</td>}
+      {/* <td>{heartRate && heartRate.toFixed(0)}</td> */}
       <td>{runTime}</td>
-      <td className={styles.runDate}>{run.start_date_local}</td>
+      <td className={styles.runDate}>{new Date(run.start_date_local).toLocaleDateString()}</td>
     </tr>
   );
 };
