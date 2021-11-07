@@ -76,17 +76,22 @@ def parse_raw_data_to_nametuple(run_data, old_gpx_ids, with_download_gpx=False):
 
     if with_download_gpx:
         gpx_data = parse_points_to_gpx(points, run_data["startTime"])
-        download_ichebao_gpx(gpx_data, str(run_data["startTime"]))
+        download_ichebao_gpx(gpx_data, str(run_data["startTime"]), run_data)
 
     return namedtuple("x", d.keys())(*d.values())
 
 
-def download_ichebao_gpx(gpx_data, ichebao_id):
+def download_ichebao_gpx(gpx_data, ichebao_id, raw_data):
     try:
         print(f"downloading ichebao_id {str(ichebao_id)} gpx")
         file_path = os.path.join(GPX_FOLDER, str(ichebao_id) + ".gpx")
         with open(file_path, "w") as fb:
             fb.write(gpx_data)
+
+        print(f"downloading ichebao_id {str(ichebao_id)} raw data")
+        raw_file_path = os.path.join(GPX_FOLDER, str(ichebao_id) + ".json")
+        with open(raw_file_path, "w") as fw:
+            fw.write(str(raw_data))
     except:
         print(f"wrong id {ichebao_id}")
         pass
@@ -142,7 +147,6 @@ def get_all_ichebao_tracks(email, password, old_tracks_ids, with_download_gpx=Fa
         run = r.json()["data"][0]
         r = s.post(DETAIL_API, headers=headers, json=data)
         run["points"] = r.json()["data"]
-
         track = parse_raw_data_to_nametuple(
             run, old_tracks_ids, with_download_gpx)
         tracks.append(track)
