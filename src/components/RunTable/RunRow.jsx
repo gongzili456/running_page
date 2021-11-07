@@ -1,3 +1,4 @@
+import moment from "moment";
 import React from 'react';
 import { MAIN_COLOR } from 'src/utils/const';
 import { formatPace, formatRunTime } from 'src/utils/utils';
@@ -39,7 +40,7 @@ const RunRow = ({ runs, run, locateActivity, runIndex, setRunIndex }) => {
       {pace && <td>{pace}km/h</td>}
       {/* <td>{heartRate && heartRate.toFixed(0)}</td> */}
       <td>{runTime}</td>
-      <td className={styles.runDate}>{new Date(run.start_date_local).toLocaleDateString()}</td>
+      <td className={styles.runDate}>{moment(run.start_date_local).format("YYYY-MM-DD")}</td>
     </tr>
   );
 };
