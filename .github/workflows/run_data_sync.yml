@@ -70,7 +70,7 @@ jobs:
       - name: Run sync Keep script
         if: env.RUN_TYPE == 'ichebao'
         run: |
-          python scripts/ichebao_sync.py ${{ secrets.ICHEBAO_MOBILE }} ${{ secrets.ICHEBAO_PASSWORD }} --with-gpx
+          python scripts/ichebao_sync.py ${{ secrets.ICHEBAO_MOBILE }} ${{ secrets.ICHEBAO_PASSWORD }} ${{ secrets.ICHEBAO_SIGN }} --with-gpx
 
       - name: Run sync Keep script
         if: env.RUN_TYPE == 'keep'
