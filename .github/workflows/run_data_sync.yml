@@ -122,7 +122,7 @@ jobs:
         uses: github-actions-x/commit@v2.6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: 'Add new runs $GITHUB_SHA'
+          commit-message: 'Add new runs'
           files: activities src/static/ scripts/ assets/ GPX_OUT/
           rebase: 'true'
           name: ${{ env.GITHUB_NAME }}
