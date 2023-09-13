@@ -38,7 +38,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v1
         with:
-          python-version: 3.8
+          python-version: 3.10
 
       # from pdm
       - name: Set Variables
@@ -117,7 +117,7 @@ jobs:
           python scripts/gen_svg.py --from-db --title "${{ env.TITLE_GRID }}" --type grid --athlete "${{ env.ATHLETE }}"  --output assets/grid.svg --min-distance "${{ env.MIN_GRID_DISTANCE }}"  --special-color yellow --special-color2 red --special-distance 20 --special-distance2 40 --use-localtime
           python scripts/gen_svg.py --from-db --type circular --use-localtime
           python scripts/gen_svg.py --from-db --year $(date +"%Y")  --language zh_CN --title "$(date +"%Y") Running" --type github --athlete "${{ env.ATHLETE }}" --special-distance 10 --special-distance2 20 --special-color yellow --special-color2 red --output assets/github_$(date +"%Y").svg --use-localtime --min-distance 0.5
-      
+
       - name: Push new runs
         uses: github-actions-x/commit@v2.9
         with:
