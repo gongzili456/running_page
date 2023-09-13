@@ -9,8 +9,7 @@ from logging import log
 import gpxpy
 import polyline
 import requests
-from config import (BASE_TIMEZONE, GPX_FOLDER, JSON_FILE, SQL_FILE, run_map,
-                    start_point)
+from config import BASE_TIMEZONE, GPX_FOLDER, JSON_FILE, SQL_FILE, run_map, start_point
 from generator import Generator
 
 from utils import adjust_time
@@ -46,8 +45,7 @@ def parse_raw_data_to_nametuple(run_data, old_gpx_ids, with_download_gpx=False):
     points = run_data["points"]
     run_points_data = [[p["lat"], p["lon"]] for p in points]
     polyline_str = polyline.encode(run_points_data) if run_points_data else ""
-    start_latlng = start_point(
-        *run_points_data[0]) if run_points_data else None
+    start_latlng = start_point(*run_points_data[0]) if run_points_data else None
     start_date = datetime.utcfromtimestamp(run_data["startTime"] / 1000)
     end = datetime.utcfromtimestamp(run_data["endTime"] / 1000)
     start_date_local = adjust_time(start_date, BASE_TIMEZONE)
@@ -65,7 +63,7 @@ def parse_raw_data_to_nametuple(run_data, old_gpx_ids, with_download_gpx=False):
         "map": run_map(polyline_str),
         "start_latlng": start_latlng,
         "distance": run_data["mileage"] * 1000,
-        "moving_time": timedelta(seconds=(run_data["duration"]*1000)),
+        "moving_time": timedelta(seconds=(run_data["duration"] * 1000)),
         "elapsed_time": timedelta(
             seconds=int((run_data["endTime"] - run_data["startTime"]) / 1000)
         ),
@@ -103,9 +101,7 @@ def parse_points_to_gpx(run_points_data, start_time):
         points_dict = {
             "latitude": point["lat"],
             "longitude": point["lon"],
-            "time": datetime.utcfromtimestamp(
-                (point["time"] + start_time) / 1000
-            ),
+            "time": datetime.utcfromtimestamp((point["time"] + start_time) / 1000),
         }
         points_dict_list.append(points_dict)
     gpx = gpxpy.gpx.GPX()
@@ -123,32 +119,37 @@ def parse_points_to_gpx(run_points_data, start_time):
     return gpx.to_xml()
 
 
-def get_all_ichebao_tracks(email, password, old_tracks_ids, with_download_gpx=False, with_all=False, sign=""):
+def get_all_ichebao_tracks(
+    email, password, old_tracks_ids, with_download_gpx=False, with_all=False, sign=""
+):
     if with_download_gpx and not os.path.exists(GPX_FOLDER):
         os.mkdir(GPX_FOLDER)
     s = requests.Session()
     s, headers = login(s, email, password, sign)
     tracks = []
     today = datetime.today()
-    startDay = today - timedelta(days=60 if with_all else 1)
-    startDay = datetime(startDay.year, startDay.month,
-                        1 if with_all else startDay.day, 0, 0)
+    startDay = today - timedelta(days=30 if with_all else 1)
+    startDay = datetime(
+        startDay.year, startDay.month, 1 if with_all else startDay.day, 0, 0
+    )
     duration = (today - startDay).days
     while duration >= 0:
         d = today - timedelta(days=duration)
         duration = duration - 1
         begin = datetime(d.year, d.month, d.day, 0, 0)
         end = datetime(d.year, d.month, d.day, 23, 59, 59)
-        data = {"beginTime": begin.timestamp() * 1000, "endTime": end.timestamp()
-                * 1000, "vehicleId": CAR_ID}
+        data = {
+            "beginTime": begin.timestamp() * 1000,
+            "endTime": end.timestamp() * 1000,
+            "vehicleId": CAR_ID,
+        }
         r = s.post(DAY_API, headers=headers, json=data)
         if not r.json()["data"]:
             continue
         run = r.json()["data"][0]
         r = s.post(DETAIL_API, headers=headers, json=data)
         run["points"] = r.json()["data"]
-        track = parse_raw_data_to_nametuple(
-            run, old_tracks_ids, with_download_gpx)
+        track = parse_raw_data_to_nametuple(run, old_tracks_ids, with_download_gpx)
         tracks.append(track)
 
         print(f"parse done {datetime.fromtimestamp(track.id/1000)}")
@@ -160,7 +161,8 @@ def run_ichebao_sync(email, password, with_download_gpx=False, with_all=False, s
     generator = Generator(SQL_FILE)
     old_tracks_ids = generator.get_old_tracks_ids()
     new_tracks = get_all_ichebao_tracks(
-        email, password, old_tracks_ids, with_download_gpx, with_all, sign)
+        email, password, old_tracks_ids, with_download_gpx, with_all, sign
+    )
     generator.sync_from_app(new_tracks)
     activities_list = generator.load()
     with open(JSON_FILE, "w") as f:
@@ -179,14 +181,16 @@ if __name__ == "__main__":
         help="get all keep data to gpx and download",
     )
     parser.add_argument(
-        "--all",
-        dest="all",
-        action="store_true",
-        help="get all day data"
+        "--all", dest="all", action="store_true", help="get all day data"
     )
 
     options = parser.parse_args()
     print("options: ", options)
 
-    run_ichebao_sync(options.phone_number, options.password,
-                     options.with_gpx, options.all, options.sign)
+    run_ichebao_sync(
+        options.phone_number,
+        options.password,
+        options.with_gpx,
+        options.all,
+        options.sign,
+    )
