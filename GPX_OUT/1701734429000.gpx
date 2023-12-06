@@ -492,9 +492,6 @@
       <trkpt lat="39.998014" lon="116.483919">
         <time>2077-11-07T00:51:10Z</time>
       </trkpt>
-      <trkpt lat="39.997526" lon="116.484993">
-        <time>2077-11-07T11:35:45Z</time>
-      </trkpt>
       <trkpt lat="39.997701" lon="116.48413">
         <time>2077-11-07T11:43:11Z</time>
       </trkpt>
@@ -978,8 +975,20 @@
       <trkpt lat="39.88955" lon="116.207454">
         <time>2077-11-07T15:43:14Z</time>
       </trkpt>
-      <trkpt lat="39.889375" lon="116.20721">
-        <time>2077-11-07T17:25:41Z</time>
+      <trkpt lat="39.889534" lon="116.207405">
+        <time>2077-11-07T20:49:26Z</time>
+      </trkpt>
+      <trkpt lat="39.889436" lon="116.20747">
+        <time>2077-11-07T21:20:21Z</time>
+      </trkpt>
+      <trkpt lat="39.889392" lon="116.207454">
+        <time>2077-11-07T22:11:06Z</time>
+      </trkpt>
+      <trkpt lat="39.889518" lon="116.207486">
+        <time>2077-11-07T23:35:26Z</time>
+      </trkpt>
+      <trkpt lat="39.889729" lon="116.207405">
+        <time>2077-11-07T23:45:16Z</time>
       </trkpt>
     </trkseg>
   </trk>
