@@ -128,7 +128,7 @@ def get_all_ichebao_tracks(
     s, headers = login(s, email, password, sign)
     tracks = []
     today = datetime.today()
-    startDay = today - timedelta(days=30 if with_all else 1)
+    startDay = today - timedelta(days=33 if with_all else 1)
     startDay = datetime(
         startDay.year, startDay.month, 1 if with_all else startDay.day, 0, 0
     )
